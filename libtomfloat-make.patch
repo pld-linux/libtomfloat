@@ -1,0 +1,57 @@
+--- libtomfloat-0.02/makefile.orig	2004-06-21 23:52:03.000000000 +0200
++++ libtomfloat-0.02/makefile	2013-05-25 08:59:47.875818237 +0200
+@@ -2,14 +2,17 @@
+ #
+ #Tom St Denis
+ 
+-default: libtomfloat.a
++default: libtomfloat.la
+ 
+-CFLAGS += -Os -Wall -W -I./
++CFLAGS += -Wall -W -I.
++GCC=gcc
++CC=libtool --mode=compile --tag=CC $(GCC)
++CCLD=libtool --mode=link --tag=CC $(GCC)
+ 
+ VERSION=0.02
+ 
+ #default files to install
+-LIBNAME=libtomfloat.a
++LIBNAME=libtomfloat.la
+ HEADERS=tomfloat.h
+ 
+ #LIBPATH-The directory for libtomfloat to be installed to.
+@@ -42,9 +45,13 @@
+ \
+ mpf_cos.o mpf_sin.o mpf_tan.o mpf_acos.o mpf_asin.o mpf_atan.o
+ 
+-libtomfloat.a: $(OBJECTS)
+-	$(AR) $(ARFLAGS) libtomfloat.a $(OBJECTS)
+-	ranlib libtomfloat.a
++LTOBJS=$(OBJECTS:.o=.lo)
++
++%.lo: %.c
++	$(CC) $(CFLAGS) -c -o $@ $<
++
++libtomfloat.la: $(LTOBJS)
++	$(CCLD) $(LDFLAGS) $(CFLAGS) -o $@ $* -rpath $(LIBPATH)
+ 
+ ex1: libtomfloat.a demos/ex1.o
+ 	$(CC) demos/ex1.o libtomfloat.a -ltommath -o ex1
+@@ -62,11 +69,11 @@
+ 	pdflatex float >/dev/null
+ 	rm -f float.aux float.dvi float.log float.idx float.lof float.out float.toc
+ 
+-install: libtomfloat.a
+-	install -d -g root -o root $(DESTDIR)$(LIBPATH)
+-	install -d -g root -o root $(DESTDIR)$(INCPATH)
+-	install -g root -o root $(LIBNAME) $(DESTDIR)$(LIBPATH)
+-	install -g root -o root $(HEADERS) $(DESTDIR)$(INCPATH)
++install: libtomfloat.la
++	install -d $(DESTDIR)$(LIBPATH)
++	install -d $(DESTDIR)$(INCPATH)
++	libtool --mode=install install $(LIBNAME) $(DESTDIR)$(LIBPATH)
++	install $(HEADERS) $(DESTDIR)$(INCPATH)
+ 
+ clean:
+ 	rm -f $(OBJECTS) libtomfloat.a *~ demos/*.o demos/*~ ex1
