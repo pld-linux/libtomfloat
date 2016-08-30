@@ -5,10 +5,11 @@ Version:	0.02
 Release:	1
 License:	Public Domain
 Group:		Libraries
-Source0:	http://libtom.org/files/ltf-%{version}.tar.bz2
+#Source0Download: https://github.com/libtom/libtomfloat/releases
+Source0:	https://github.com/libtom/libtomfloat/releases/download/%{version}/ltf-%{version}.tar.bz2
 # Source0-md5:	c0fe359add600b9a895d23ca410a7a90
 Patch0:		%{name}-make.patch
-URL:		http://libtom.org/?page=features&whatfile=ltf
+URL:		http://www.libtom.org/LibTomFloat/
 BuildRequires:	libtommath-devel
 BuildRequires:	libtool >= 2:1.5
 BuildRequires:	sed >= 4.0
