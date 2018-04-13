@@ -9,7 +9,7 @@ Group:		Libraries
 Source0:	https://github.com/libtom/libtomfloat/releases/download/%{version}/ltf-%{version}.tar.bz2
 # Source0-md5:	c0fe359add600b9a895d23ca410a7a90
 Patch0:		%{name}-make.patch
-URL:		http://www.libtom.org/LibTomFloat/
+URL:		http://www.libtom.net/LibTomFloat/
 BuildRequires:	libtommath-devel
 BuildRequires:	libtool >= 2:1.5
 BuildRequires:	sed >= 4.0
